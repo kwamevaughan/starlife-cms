@@ -122,6 +122,18 @@ export default {
       type: 'string',
       readOnly: true,
     },
+    {
+      name: 'createdAt',
+      title: 'Created At',
+      type: 'datetime',
+      readOnly: true,
+    },
+    {
+      name: 'isDraft',
+      title: 'Is Draft',
+      type: 'boolean',
+      initialValue: true,
+    },
   ],
   preview: {
     select: { title: 'title', author: 'author', media: 'featuredImage' },
