@@ -1,3 +1,6 @@
+import { AutoSlugInput } from '../src/components/AutoSlugInput'
+import { AutoExcerptInput } from '../src/components/AutoExcerptInput'
+
 export default {
   name: 'post',
   title: 'Post',
@@ -14,12 +17,14 @@ export default {
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
+      components: { input: AutoSlugInput },
       validation: (Rule) => Rule.required(),
     },
     {
       name: 'author',
       title: 'Author',
-      type: 'string',
+      type: 'reference',
+      to: [{ type: 'author' }],
     },
     {
       name: 'featuredImage',
@@ -32,6 +37,7 @@ export default {
       title: 'Excerpt',
       type: 'text',
       rows: 3,
+      components: { input: AutoExcerptInput },
     },
     {
       name: 'body',
@@ -136,7 +142,7 @@ export default {
     },
   ],
   preview: {
-    select: { title: 'title', author: 'author', media: 'featuredImage' },
+    select: { title: 'title', author: 'author.name', media: 'featuredImage' },
     prepare({ title, author, media }) {
       return { title, subtitle: author, media }
     },

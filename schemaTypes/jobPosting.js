@@ -1,3 +1,5 @@
+import { AutoSlugInput } from '../src/components/AutoSlugInput'
+
 export default {
   name: 'jobPosting',
   title: 'Job Posting',
@@ -14,6 +16,7 @@ export default {
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
+      components: { input: AutoSlugInput },
       validation: (Rule) => Rule.required(),
     },
     {
