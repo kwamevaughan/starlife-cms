@@ -1,6 +1,30 @@
-import { getCliClient } from 'sanity/cli'
+import fs from 'fs'
+import path from 'path'
+import os from 'os'
+import { createClient } from '@sanity/client'
 
-const client = getCliClient().withConfig({
+// Resolve token from standard Sanity CLI config location
+let token = process.env.SANITY_AUTH_TOKEN
+if (!token) {
+  try {
+    const configPath = path.join(os.homedir(), '.config', 'sanity', 'config.json')
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'))
+    token = config.authToken
+  } catch (err) {
+    // Ignore
+  }
+}
+
+if (!token) {
+  console.error('Error: Could not find Sanity auth token. Please run "npx sanity login" first.')
+  process.exit(1)
+}
+
+const client = createClient({
+  projectId: 'bh7t819v',
+  dataset: 'production',
+  token: token,
+  useCdn: false,
   apiVersion: '2026-05-19',
 })
 

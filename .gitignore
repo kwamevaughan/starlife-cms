@@ -1,3 +1,11 @@
 node_modules
 dist
 .env
+
+# Scripts - Organized by purpose
+/scripts/*
+!/scripts/migrations/
+!/scripts/utils/
+!/scripts/README.md
+/scripts/temp/
+scripts/node_modules/

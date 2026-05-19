@@ -91,15 +91,10 @@ export default {
       of: [{ type: 'reference', to: [{ type: 'tag' }] }],
     },
     {
-      name: 'isPublished',
-      title: 'Published',
-      type: 'boolean',
-      initialValue: false,
-    },
-    {
       name: 'publishDate',
       title: 'Publish Date',
       type: 'datetime',
+      initialValue: () => new Date().toISOString(),
     },
     {
       name: 'metaTitle',
@@ -122,24 +117,14 @@ export default {
       title: 'Focus Keyword',
       type: 'string',
     },
-    {
-      name: 'legacyId',
-      title: 'Legacy Supabase ID',
-      type: 'string',
-      readOnly: true,
-    },
+
     {
       name: 'createdAt',
       title: 'Created At',
       type: 'datetime',
       readOnly: true,
     },
-    {
-      name: 'isDraft',
-      title: 'Is Draft',
-      type: 'boolean',
-      initialValue: true,
-    },
+
   ],
   preview: {
     select: { title: 'title', author: 'author.name', media: 'featuredImage' },
