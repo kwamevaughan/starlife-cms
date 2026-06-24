@@ -1,45 +1,46 @@
+import { defineType, defineField } from 'sanity'
 import { AutoSlugInput } from '../src/components/AutoSlugInput'
 import { AutoExcerptInput } from '../src/components/AutoExcerptInput'
 
-export default {
+export default defineType({
   name: 'post',
   title: 'Post',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
-    },
-    {
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
       components: { input: AutoSlugInput },
       validation: (Rule) => Rule.required(),
-    },
-    {
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',
       to: [{ type: 'author' }],
-    },
-    {
+    }),
+    defineField({
       name: 'featuredImage',
       title: 'Featured Image',
       type: 'image',
       options: { hotspot: true },
-    },
-    {
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
       rows: 3,
       components: { input: AutoExcerptInput },
-    },
-    {
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
@@ -77,59 +78,57 @@ export default {
         },
         { type: 'image', options: { hotspot: true } },
       ],
-    },
-    {
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
       to: [{ type: 'category' }],
-    },
-    {
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'tag' }] }],
-    },
-    {
+    }),
+    defineField({
       name: 'publishDate',
       title: 'Publish Date',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
-    },
-    {
+    }),
+    defineField({
       name: 'metaTitle',
       title: 'Meta Title',
       type: 'string',
-    },
-    {
+    }),
+    defineField({
       name: 'metaDescription',
       title: 'Meta Description',
       type: 'text',
       rows: 2,
-    },
-    {
+    }),
+    defineField({
       name: 'metaKeywords',
       title: 'Meta Keywords',
       type: 'string',
-    },
-    {
+    }),
+    defineField({
       name: 'focusKeyword',
       title: 'Focus Keyword',
       type: 'string',
-    },
-
-    {
+    }),
+    defineField({
       name: 'createdAt',
       title: 'Created At',
       type: 'datetime',
       readOnly: true,
-    },
-
+    }),
   ],
   preview: {
     select: { title: 'title', author: 'author.name', media: 'featuredImage' },
-    prepare({ title, author, media }) {
+    prepare({ title, author, media }: { title: string; author: string; media: unknown }) {
       return { title, subtitle: author, media }
     },
   },
-}
+})

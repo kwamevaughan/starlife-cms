@@ -13,7 +13,6 @@ export default defineConfig({
     structureTool(),
     visionTool(),
   ],
-
   schema: {
     types: schemaTypes,
   },

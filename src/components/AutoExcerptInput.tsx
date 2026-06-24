@@ -1,9 +1,15 @@
 import { useFormValue, set, unset } from 'sanity'
 import { useEffect, useRef } from 'react'
+import type { TextInputProps } from 'sanity'
 
-function blocksToText(blocks) {
+type Block = {
+  _type: string
+  children?: { text: string }[]
+}
+
+function blocksToText(blocks: unknown): string {
   if (!blocks || !Array.isArray(blocks)) return ''
-  return blocks
+  return (blocks as Block[])
     .map((block) => {
       if (block._type !== 'block' || !block.children) return ''
       return block.children.map((child) => child.text).join('')
@@ -12,20 +18,17 @@ function blocksToText(blocks) {
     .join('\n\n')
 }
 
-function getExcerpt(body) {
+function getExcerpt(body: unknown): string {
   const text = blocksToText(body).trim()
   if (!text) return ''
   if (text.length <= 160) return text
-  // Cut at 160 characters and find the last space to avoid cutting a word in half
   const truncated = text.substring(0, 160)
   const lastSpace = truncated.lastIndexOf(' ')
-  if (lastSpace > 120) {
-    return truncated.substring(0, lastSpace) + '...'
-  }
+  if (lastSpace > 120) return truncated.substring(0, lastSpace) + '...'
   return truncated + '...'
 }
 
-export function AutoExcerptInput(props) {
+export function AutoExcerptInput(props: TextInputProps) {
   const { onChange, value } = props
   const body = useFormValue(['body'])
   const prevBodyRef = useRef(body)
@@ -34,7 +37,6 @@ export function AutoExcerptInput(props) {
     const currentExcerpt = value
     const prevGenerated = prevBodyRef.current ? getExcerpt(prevBodyRef.current) : ''
 
-    // Only auto-generate if current excerpt is empty OR if it matches what we automatically generated last time from the body.
     if (body && (!currentExcerpt || currentExcerpt === prevGenerated)) {
       const newExcerpt = getExcerpt(body)
       if (newExcerpt !== currentExcerpt) {
